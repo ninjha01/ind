@@ -30,6 +30,7 @@ def parse_edits(edits, ref_str, trans_str):
         op = line['type']
         loc = int(line['i']) + 1
         trans_loc = int(line['j'])
+        print(trans_loc)
         change = trans_str[trans_loc]
         if(op == "deletion"):
             parsed.append((loc, op[0:3], ''))

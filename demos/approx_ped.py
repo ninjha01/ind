@@ -30,7 +30,6 @@ def parse_edits(edits, ref_str, trans_str):
         op = line['type']
         loc = int(line['i']) + 1
         trans_loc = int(line['j']) - 1
-        print(line)
         change = trans_str[trans_loc]
         if(op == "deletion"):
             parsed.append((loc, op[0:3], ''))
@@ -48,6 +47,7 @@ def edit_diff(A_edits, B_edits):
             set_diff.append(x)
 
     return set_diff
+### Code taken from (Curzona's Levenshtein Gist)[https://gist.github.com/curzona/9435822] and slightly modified for readability ########
 
 # Calculates the levenshtein distance and the edits between two strings
 def levenshtein(ref_str, op_str, key=hash):
@@ -113,6 +113,8 @@ def backtrace(ref_str, op_str, rows, key=hash):
   edits.reverse()
  
   return edits
+
+##########################################################################################################
 
 #don't worry about forward declaring
 if __name__=="__main__":

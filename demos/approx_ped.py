@@ -15,7 +15,7 @@ def main():
     print("Min edits from Ref -> B:")
     print(B_min_edits)
 
-    A_B_diff = compute_edit_set_diff(A_min_edits, B_min_edits)
+    A_B_diff = compute_set_diff(A_min_edits, B_min_edits)
     print("Set Difference: " + str(A_B_diff))
     print("With Cardinality: " + str(len(A_B_diff)))
 
@@ -38,14 +38,14 @@ def parse_edits(edits, ref_str, trans_str):
             parsed.append((loc, op[0:3], change))
     return parsed
 
-def compute_edit_set_diff(A_edits, B_edits):
+def compute_set_diff(set_A, set_B):
     set_diff = []
-    for x in A_edits:
-        if x not in B_edits:
-            set_diff.append(x)
-    for x in B_edits:
-        if x not in A_edits:
-            set_diff.append(x)
+    for a in set_A:
+        if a not in set_B:
+            set_diff.append(a)
+    for b in set_B:
+        if b not in set_A:
+            set_diff.append(b)
 
     return set_diff
 ### Code taken from (Curzona's Levenshtein Gist)[https://gist.github.com/curzona/9435822] and slightly modified for readability ########

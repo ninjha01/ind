@@ -45,15 +45,13 @@ Clearly, we cannot allow this set difference to be calculated. However, if we ta
 \item Using probabilistic algorithms, the size of the set difference can be securely approximated while keeping the actual set difference private.
 \end{enumerate}
 
-\textbf{{Talking about approximation protocol}}
+The approximation process is as follows:
 
-\textbf{{Talking about approximation protocol}}
+\begin{enumerate}
+\item Party A calculates the minimum edit sequences from the reference genome to genome A using the levenshtein distance.
+\item Party B calculates the minimum edit sequences from the reference genome to genome B using the levenshtein distance.
+\item 
 
-\textbf{{Talking about approximation protocol}}
-
-\textbf{{Talking about approximation protocol}}
-
-\textbf{{Talking about approximation protocol}}
 
 This approximation process's accuracy is aided by the special distribution of human genome sequences.
 
@@ -70,8 +68,6 @@ Implemented a demo in python: \cite{leven_py}.
 
 
 \section{Honest-but-Curious Threat Model}
-
-I'm editing this document to test out how the file syncs.
 
 \section{Garbled Circuits}
 

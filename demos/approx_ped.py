@@ -2,27 +2,28 @@ def main():
     ref_gen = input("Enter Reference Genome or enter nothing for demo: \n") or "ATTGCCCGA"
 
     A_gen = input("Enter Genome A or enter nothing for demo: \n") or "GTTGGATAA"
-    A_leven = levenshtein(ref_gen, A_gen)
-    A_edits = A_leven[1]
-    A_parsed = parse_edits(A_edits, ref_gen, A_gen)
+    A_min_edits = compute_min_edits(A_gen, ref_gen)
 
     B_gen = input("Enter Genome B or enter nothing for demo: \n") or "GTTCGATGA"
-    B_leven = levenshtein(ref_gen, B_gen)
-    B_edits = B_leven[1]
-    B_parsed = parse_edits(B_edits, ref_gen, B_gen)
-
-    A_B_diff = edit_diff(A_parsed, B_parsed)
+    B_min_edits = compute_min_edits(B_gen, ref_gen)
     
     print("Reference Genome: " + ref_gen)
     print("Genome A: " + A_gen)
     print("Genome B: " + B_gen)
     print("Min edits from Ref -> A: ")
-    print(A_parsed)
+    print(A_min_edits)
     print("Min edits from Ref -> B:")
-    print(B_parsed)
-    
+    print(B_min_edits)
+
+    A_B_diff = compute_edit_set_diff(A_min_edits, B_min_edits)
     print("Set Difference: " + str(A_B_diff))
     print("With Cardinality: " + str(len(A_B_diff)))
+
+def compute_min_edits(ref_str, trans_str):
+    leven = levenshtein(ref_str, trans_str)
+    edits = leven[1]
+    parsed = parse_edits(edits, ref_str, trans_str)
+    return parsed
     
 def parse_edits(edits, ref_str, trans_str):
     parsed = []
@@ -37,7 +38,7 @@ def parse_edits(edits, ref_str, trans_str):
             parsed.append((loc, op[0:3], change))
     return parsed
 
-def edit_diff(A_edits, B_edits):
+def compute_edit_set_diff(A_edits, B_edits):
     set_diff = []
     for x in A_edits:
         if x not in B_edits:

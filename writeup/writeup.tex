@@ -35,13 +35,16 @@ This unwieldy size necessitated an optimization that takes advantage of the larg
 An analogous idea in computer science is that of \textit{edit distance}. Put simply, the edit distance between two strings is the number of characters that must be substituted, inserted, or deleted to change one of the strings into another \cite{editdistance}.
 
 \paragraph{}
+It is often useful to calculate the edit distance between two different genomes. If a patient is diagnosed with a disease a physician may want to see the prognosis of other genetically similar patients with the disease.
+
+\paragraph{}
 From both a practical and privacy standpoint, it is undesirable to send a patient's entire genome sequence whenever a comparison is required. Because each genome sequence is 200 gigabytes in size, bandwidth will quickly become a bottleneck. Additionally, genome sequences are practically unparalleled in their ability to uniquely identify an individual. Furthermore, they contain sensitive medical data - not only the prescence of congenital diseases but predispositions to a wide swath of additional maladies.
 
 \paragraph{}
-The .vcf ``diff'' method only alleviates one of these problems - the one concerning bandwidth. Because the human reference genome sequence is publically available, reverse engineering an individual's genome sequence given a comprehensive variant file is trivial - simply start with the reference and make the changes described in the variant file. Similarily, if you are given a variant file that describes the set difference between your genome sequence and another person $Y$'s sequence, the derivation of $Y$'s sequence is trivial as well. 
+The .vcf ``diff'' method only alleviates one of these problems - the one concerning bandwidth. Because the human reference genome sequence is publicly available, reverse engineering an individual's genome sequence given a comprehensive variant file is trivial - simply start with the reference and make the changes described in the variant file. Similarily, if you are given a variant file that describes the set difference between your genome sequence and another person $Y$'s sequence, the derivation of $Y$'s sequence is trivial as well. 
 
 \paragraph{}
-Clearly, we cannot allow this set difference to be calculated. However, if we take advantage of three features we can reduce the problem of calculating the set difference while maintaining privacy to calculating the \textit{size} of the set difference while maintaining privacy.
+Clearly, we cannot allow this set difference to be calculated. However, if we take advantage of three features we can reduce the problem of calculating the set difference while maintaining privacy to the problem of calculating the \textit{size} of the set difference while maintaining privacy.
 
 \begin{enumerate}
 \item Most differences between human genome sequences are \textit{substitutions}, not insertions or deletions.
@@ -57,6 +60,12 @@ The algorithm is as follows:
 \item The parties run a secure computation protocol to approximate the cardinality of the set difference of the minimum edit sequences.
 \end{enumerate}
 
+\paragraph{}
+This third step has it's own multistep protocol. While the technical details can be found in both the paper and an implementation included with this report, at a high level the protocol works by ``squeezing'' each set of edit sequences into an integer. This ``squeezing'' is performed by taking the sum of the binary hash ($h : edit \rightarrow \{-1, 1\}$) of each edit in the set. Once the ``squeezed'' values $d_A$ and $d_B$ are computed, square of the difference is computed $(d_A - d_B)^2$. This squeezing process is performed $l$ times, and then the $k$-median is taken. Here, $l$ and $k$ are used to bound the accuracy and the efficiency.
+
+\paragraph{}
+The above algorithm is implemented in \texttt{sec\_ped.py} contained in the \texttt{demos} directory (where all other demos will be located). As a comparison for the accuracy of the secure computation demo, an unsecure algorithm is implemented in \texttt{unsec\_ped.py}.
+
 This approximation process's accuracy is aided by the special distribution of human genome sequences.
 
 For any two suitably unrelated individuals:
@@ -67,15 +76,10 @@ For any two suitably unrelated individuals:
 \item A majority of the differences between genome sequences are substitutions, around 80\%
 \end{enumerate}
 
-\paragraph{}
-
-Implemented a demo in python \cite{leven_py}.
+\section{Garbled Circuits}
 
 
 \section{Honest-but-Curious Threat Model}
-
-\section{Garbled Circuits}
-
 \section{Differential Privacy}
 
 
@@ -92,9 +96,6 @@ Implemented a demo in python \cite{leven_py}.
   
 \bibitem{editdistance}
   http://repositorio.uchile.cl/bitstream/handle/2250/126168/Navarro\_Gonzalo\_Guided\_tour.pdf
-
-\bibitem{leven_py}
-  https://gist.github.com/curzona/9435822
 
 \end{thebibliography}
 

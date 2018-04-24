@@ -1,13 +1,17 @@
 \documentclass[12pt]{article}
 \usepackage[margin=1.0in]{geometry}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+
 
 \begin{document}
-
 \pagenumbering{gobble}
 \author{Nishant Jha}
 \title{Independent Study Writeup}
 
 \maketitle
+
+\begin{multicols}{2}
 
 \section{Private Edit Distance}
 
@@ -45,13 +49,13 @@ Clearly, we cannot allow this set difference to be calculated. However, if we ta
 \item Using probabilistic algorithms, the size of the set difference can be securely approximated while keeping the actual set difference private.
 \end{enumerate}
 
-The approximation process is as follows:
+The algorithm is as follows:
 
 \begin{enumerate}
 \item Party A calculates the minimum edit sequences from the reference genome to genome A using the levenshtein distance.
 \item Party B calculates the minimum edit sequences from the reference genome to genome B using the levenshtein distance.
-\item 
-
+\item The parties run a secure computation protocol to approximate the cardinality of the set difference of the minimum edit sequences.
+\end{enumerate}
 
 This approximation process's accuracy is aided by the special distribution of human genome sequences.
 
@@ -64,7 +68,8 @@ For any two suitably unrelated individuals:
 \end{enumerate}
 
 \paragraph{}
-Implemented a demo in python: \cite{leven_py}.
+
+Implemented a demo in python \cite{leven_py}.
 
 
 \section{Honest-but-Curious Threat Model}
@@ -74,6 +79,7 @@ Implemented a demo in python: \cite{leven_py}.
 \section{Differential Privacy}
 
 
+\end{multicols}
 \begin{thebibliography}{9}
 \bibitem{naturegene} 
   https://www.nature.com/articles/35057062

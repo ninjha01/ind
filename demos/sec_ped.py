@@ -1,6 +1,7 @@
 import mmh3
 import statistics
 import random
+from progress.bar import Bar
 '''
 Input of A: a set A.
 Input of B: a set B.
@@ -18,19 +19,19 @@ Output: |Diff(A, B)| is calculated as the k-median of l-mean of random sampling 
    b. A and B securely compute D^_j = Sum(i -> l) D_i / l
 2. A and B securely compute the median Z of D^_1 ... D^_k
 3. Output Z
-https://github.com/wbernoudy/pygarble
 '''
 def main():
-    ref_gen = "ATTGCCCGA"
-    A_gen = "GTTGGATAAGTT"
-    B_gen = "GTTCGATGAGTT"
-    pub_rand_str = ["123456789", "abcdefg", "nishant", "mahmoody", "cryptography"]
+    ref_gen = open("./genome_ref.txt", "r").read()
+    A_gen = open("./genome_A.txt", "r").read()
+    B_gen = open("./genome_B.txt", "r").read()
     A_min_edits = compute_min_edits(A_gen, ref_gen)
     B_min_edits = compute_min_edits(B_gen, ref_gen)
     
-    l = 5000
-    k = 200
+    pub_rand_str = ["123456789", "abcdefg", "jha", "mahmoody", "cryptography"]
+    l = 200
+    k = 20
     D_hat = []
+    bar = Bar('Computing...     ', max=k) 
     for j in range(1,k+1):
         D = []
         for i in range(1,l+1):
@@ -41,8 +42,10 @@ def main():
             D.append(D_i)
         D_hat_j = sec_compute_D_hat_j(D, l)
         D_hat.append(D_hat_j)
+        bar.next()
     median = statistics.median(D_hat)
-    print(median)
+    bar.finish()
+    print("|A - B|: " + str(median))
 
 def get_seed(str):
     return mmh3.hash(str, random.randint(1, 1000))

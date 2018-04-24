@@ -1,23 +1,11 @@
 def main():
-    ref_gen = input("Enter Reference Genome or enter nothing for demo: \n") or "ATTGCCCGA"
-
-    A_gen = input("Enter Genome A or enter nothing for demo: \n") or "GTTGGATAA"
-    A_min_edits = compute_min_edits(A_gen, ref_gen)
-
-    B_gen = input("Enter Genome B or enter nothing for demo: \n") or "GTTCGATGA"
+    ref_gen = open("./genome_ref.txt", "r").read()
+    A_gen = open("./genome_A.txt", "r").read()
+    B_gen = open("./genome_B.txt", "r").read()
     B_min_edits = compute_min_edits(B_gen, ref_gen)
-    
-    print("Reference Genome: " + ref_gen)
-    print("Genome A: " + A_gen)
-    print("Genome B: " + B_gen)
-    print("Min edits from Ref -> A: ")
-    print(A_min_edits)
-    print("Min edits from Ref -> B:")
-    print(B_min_edits)
-
+    A_min_edits = compute_min_edits(A_gen, ref_gen)
     A_B_diff = compute_set_diff(A_min_edits, B_min_edits)
-    print("Set Difference: " + str(A_B_diff))
-    print("With Cardinality: " + str(len(A_B_diff)))
+    print("|A - B|: " + str(len(A_B_diff)))
 
 def compute_min_edits(ref_str, trans_str):
     leven = levenshtein(ref_str, trans_str)

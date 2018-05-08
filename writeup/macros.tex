@@ -1,0 +1,739 @@
+
+\newcommand{\DIY}{\paragraph{Do it yourself:}}
+
+\newcommand{\fvers}{(Please see the full version for the proof.) }
+
+\newcommand{\overbar}[1]{\mkern 1.9mu\overline{\mkern-2.9mu#1\mkern-0.5mu}\mkern 1.9mu}
+
+
+
+\newcommand{\EQref}[1]{Equation~(\ref{#1})}
+\newcommand{\VP}{\mathrm{ValPref}}
+\newcommand{\EX}{\mathsf{Ext}}
+\newcommand{\Dn}{D^{\scriptscriptstyle (n)}}
+
+\newcommand{\cost}{\mathsf{cost}}
+\newcommand{\avgcost}{\overline{\cost}}
+
+
+\newcommand{\KLsimp}{D_\mathsf{\scriptscriptstyle KL}}
+\newcommand{\KL}[2]{D_\mathsf{\scriptscriptstyle KL}(#1||#2)}
+\newcommand{\KLn}[2]{D^{\scriptscriptstyle (n)}_\mathsf{\scriptscriptstyle KL}(#1||#2)}
+
+\newcommand{\MDsimp}{D_{\scriptscriptstyle \infty}}
+\newcommand{\MD}[2]{D_{\scriptscriptstyle \infty}(#1||#2)}
+\newcommand{\MDn}[2]{D^{\scriptscriptstyle (n)}_{\scriptscriptstyle\infty}(#1||#2)}
+
+\newcommand{\SDsimp}{D_\mathsf{\scriptscriptstyle SD}}
+\newcommand{\SD}[2]{D_\mathsf{\scriptscriptstyle SD}(#1,#2)}
+\newcommand{\SDn}[2]{D^{\scriptscriptstyle (n)}_\mathsf{\scriptscriptstyle SD}(#1,#2)}
+
+\newcommand{\minE}[1]{\mathrm{H}_{\scriptscriptstyle \infty}(#1)}
+
+\newcommand{\pfix}[2]{ #1_{\leq #2}}
+\newcommand{\dmax}{\mathsf{max}_\delta}
+\newcommand{\avr}[2]{\Ex[#1(#2)]}
+\newcommand{\dMax}{\mathsf{Max}_{\geq \delta}}
+\newcommand{\dlMax}{\mathsf{Max}_{< \delta}}
+
+\newcommand{\fhat}[2]{\ifthenelse{\equal{#2}{}}{\hat{f}[#1]}{\ifthenelse{\equal{#2}{0}}{\hat{f}[\emptyset]}{\hat{f}[#1_{\leq #2}]}}}
+
+\newcommand{\gain}[2]{\ifthenelse{\equal{#2}{}}{g[#1]}{g[#1_{\leq #2}]}}
+
+\newcommand{\avGain}[3]{{\mathcal{G}}_{#3}[#1_{\leq #2 -1}]}
+\newcommand{\avAbGain}[3]{\mathcal{A}_{#3}[#1_{\leq #2 -1}]}
+\newcommand{\avSqGain}[3]{\mathcal{Q}_{#3}[#1_{\leq #2 -1}]}
+
+\newcommand{\avAbGainPo}[3]{\cA^+_{#3}[#1_{\leq #2 -1}]}
+\newcommand{\avAbGainNg}[3]{\cA^-_{#3}[#1_{\leq #2 -1}]}
+\newcommand{\avAbGainDe}[3]{\cA^*_{#3}[#1_{\leq #2 -1}]}
+
+\newcommand{\parag}[1]{\paragraph{#1.}}
+
+\newcommand{\ORTam}{\mathsf{ORSam}}
+
+\newcommand{\var}[2]{\Var[#1(#2)]}
+
+\newcommand{\pr}[2][]{\Pr_{\ifthenelse{\isempty{#1}}{}{{#1}}}\left[{#2}\right]}
+
+\newcommand{\GTamp}{\mathsf{GTam}}
+\newcommand{\EGTamp}{\mathsf{EGTam}}
+
+\newcommand{\LimSup}{\operatorname{limSup}}
+%\newcommand{\sup}{\operatorname{sup}}
+\newcommand{\pmbits}{\{+1,-1\}}
+\newcommand{\pmint}{[-1,+1]}
+\newcommand{\Tamp}{\mathsf{Tam}}
+
+
+ 
+ 
+% Oracle subroutines
+\newcommand{\distO}{\mathbf{O}}
+\newcommand{\setup}{\mathsf{G}}
+\newcommand{\findsk}{{\mathsf{G}^{-1}}}
+\newcommand{\enc}{\operatorname{Enc}}
+\newcommand{\dec}{\operatorname{Dec}}
+\newcommand{\rev}{\mathsf{rev}}
+\newcommand{\decFull}{\operatorname{DecFull}}
+\newcommand{\eval}{\mathsf{eval}}
+\newcommand{\gi}{\mathsf{gi}}
+\newcommand{\gc}{\mathsf{gc}}
+
+\newcommand{\kgen}{\mathsf{K}}
+\newcommand{\test}{\mathsf{T}}
+\newcommand{\testatt}{mathsf{T}}
+\newcommand{\V}{\mathsf{V}}
+\newcommand{\Pred}{\mathsf{P}}
+\newcommand{\Func}{\mathsf{F}}
+
+% Garbling and RE
+\newcommand{\lbl}{\mathsf{label}}
+\newcommand{\GCircuit}{\mathsf{Garb}}
+\newcommand{\GInput}{\mathsf{GInput}}
+\newcommand{\GEval}{\mathsf{Eval}}
+\newcommand{\Circuit}{\mathsf{C}}
+\newcommand{\hCircuit}{\hat{\mathsf{C}}}
+\newcommand{\hFun}{\hat{\mathsf{F}}}
+\newcommand{\Fun}{\mathsf{F}}
+\newcommand{\GarbledCircuit}{\widetilde{\Circuit}}
+\newcommand{\wire}{w}
+\newcommand{\inp}{\mathsf{inp}}
+\newcommand{\inpsize}{\mathsf{inpsize}}
+\newcommand{\out}{\mathsf{out}}
+\newcommand{\CircSim}{\mathsf{CircSim}}
+\newcommand{\Garbled}[1]{\widetilde{#1}}
+\newcommand{\Output}{y}
+\newcommand{\Input}{x}
+\newcommand{\GarbledInput}{\widetilde x}
+\newcommand{\InputKey}{s^{\mathsf{in}}}
+\newcommand{\InputSize}{m}
+\def\indc{\stackrel{{\tiny{\mathrm{comp}}}}{\approx}}
+\newcommand{\RE}{\mathsf{RE}}
+\newcommand{\REenc}{\mathsf{RE.enc}}
+\newcommand{\REdec}{\mathsf{RE.dec}}
+
+\newcommand{\HandleEval}{\mathtt{HandleEval}}
+\newcommand{\ConstructHelpers}{\mathtt{ConstHelp}}
+\newcommand{\Reduct}{\mathtt{SecurityRed}}
+\newcommand{\Reduc}{\Reduct}
+
+% Algorithms
+\newcommand{\scheme}{\mathcal{E}}
+\newcommand{\newScheme}{\dot{\scheme}}
+\newcommand{\newSchemex}{\ddot{\scheme}}
+\newcommand{\newG}{\dot{G}}
+\newcommand{\newE}{\dot{E}}
+\newcommand{\newD}{\dot{D}}
+\newcommand{\newpk}{\dot{pk}}
+\newcommand{\newsk}{\dot{sk}}
+\newcommand{\newc}{\dot{c}}
+\newcommand{\newGx}{\ddot{G}}
+\newcommand{\newEx}{\ddot{E}}
+\newcommand{\newDx}{\ddot{D}}
+\newcommand{\newpkx}{\ddot{pk}}
+\newcommand{\newskx}{\ddot{sk}}
+\newcommand{\newcx}{\ddot{c}}
+\newcommand{\newp}{\dot{p}}
+\newcommand{\newpx}{\ddot{p}}
+\newcommand{\newq}{\dot{q}}
+\newcommand{\newqx}{\ddot{q}}
+
+
+% Events Notation
+\newcommand{\Bad}{\mathrm{Bad}}
+\newcommand{\Miss}{\mathrm{Miss}}
+\newcommand{\Hit}{\mathrm{Hit}}
+\newcommand{\Disjoint}{\mathrm{Disjoint}}
+
+% Query Set Notation
+\newcommand{\sets}[1]{\mathsf{#1}}
+\newcommand{\Q}[2]{(#2 \xrightarrow[#1]{} \; ?)}
+\newcommand{\QA}[3]{(#2 \xrightarrow[#1]{} #3)}
+\newcommand{\OrigG}{\sets{OrigG}}
+\newcommand{\OrigE}{\sets{OrigE}}
+\newcommand{\OrigD}{\sets{OrigD}}
+\newcommand{\LearnG}{\sets{LearnG}}
+\newcommand{\LocalE}{\sets{LocalE}}
+\newcommand{\AllE}{\sets{AllE}}
+\newcommand{\LocalD}{\sets{LocalD}}
+\newcommand{\EvalD}{\sets{EvalD}}
+\newcommand{\SO}{S}
+\newcommand{\HintGEnc}{\sets{H}}
+\newcommand{\HintGEnci}[1]{\sets{H}^{#1}_{\newE}}
+\newcommand{\HintEDec}{\sets{H}}
+\newcommand{\HintEDeci}[1]{\sets{H}^{#1}_{\newDx}}
+\newcommand{\HintGEncSim}{\HintGEnc^*}
+\newcommand{\HintEDecSim}{\HintEDec^*}
+\newcommand{\OrigESim}{\sets{\OrigE^*}}
+\newcommand{\LocalESim}{\sets{\LocalE^*}}
+\newcommand{\LearnGSim}{\LearnG}
+\newcommand{\EvalDSim}{\EvalD^*}
+\newcommand{\QueryDist}[1]{\mathrm{Query}(#1)}
+\newcommand{\AllDist}{DistGen_1}
+\newcommand{\Diff}{\sets{Diff}}
+
+
+\newcommand{\dhat}[1]{\wh{\wh{#1}}}
+
+
+\newcommand{\tmclass}{\fclass}
+\newcommand{\Sim}{\mathsf{Sim}}
+\newcommand{\ext}{^{\mathsf{ext}}}
+
+\newcommand{\MSK}{\mathsf{MSK}}
+\newcommand{\MPK}{\mathsf{MPK}}
+\newcommand{\ID}{f}
+\newcommand{\nand}{\barwedge}
+
+\newcommand{\fclass}{\cF}
+\newcommand{\secp}{\mathrm{\kappa}}
+\newcommand{\secpar}{\secp}
+
+\newcommand{\Samp}{\mathsf{Samp}}
+
+\newcommand{\Sam}{\mathrm{Sam}}
+
+%\newcommand{\Att}{\textsc{Attack}}
+\newcommand{\Hyb}{\textsc{Hybrid}}
+\newcommand{\Idl}{\textsc{Ideal}}
+\newcommand{\Lzy}{\textsc{Lazy}}
+
+\newcommand{\HIT}{\mathsf{HIT}}
+\newcommand{\MAL}{\mathsf{MAL}}
+\newcommand{\INT}{\mathsf{INT}}
+
+\newcommand{\sm}{\setminus}
+%\newcommand{\att}{_\mathsf{att}}
+\newcommand{\hyb}{_\mathsf{hyb}}
+\newcommand{\idl}{_\mathsf{idl}}
+
+\newcommand{\oAtt}{\mathbf{Out}\att}
+\newcommand{\oHyb}{\mathbf{Out}\hyb}
+\newcommand{\oIdl}{\mathbf{Out}\idl}
+
+\newcommand{\bHyb}{B_\mathsf{hyb}}
+\newcommand{\bAtt}{B_\mathsf{att}}
+
+\newcommand{\chal}{\mathbf{chal}}
+\newcommand{\gen}{\mathbf{gen}}
+
+\newcommand{\Clsr}{\CLSR}
+
+\newcommand{\OR}{\mathsf{OR}}
+\newcommand{\AND}{\mathsf{AND}}
+
+\newcommand{\BadE}{\mathsf{BE}} % bad event
+
+% keys mathsf
+\newcommand{\sk}{\mathsf{sk}}
+\newcommand{\SK}{\mathsf{SK}}
+\newcommand{\pk}{\mathsf{pk}}
+\newcommand{\PK}{\mathsf{PK}}
+\newcommand{\dk}{\mathsf{dk}}
+\newcommand{\DK}{\mathsf{DK}}
+
+% algorithms mahtbf
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\E}{\mathbf{E}}
+\renewcommand{\d}{\mathbf{d}}
+\newcommand{\id}{\mathbf{id}}
+\newcommand{\D}{\mathbf{D}}
+\newcommand{\g}{\mathbf{g}}
+\newcommand{\G}{\mathbf{G}}
+\renewcommand{\k}{\mathbf{k}}
+\newcommand{\K}{\mathbf{K}}
+\newcommand{\p}{\mathbf{p}}
+
+
+\newcommand{\clg}{\ol{\g}}
+\newcommand{\clk}{\ol{\k}}
+\newcommand{\clid}{\ol{\id}}
+\newcommand{\cle}{\ol{\e}}
+\newcommand{\cld}{\ol{\d}}
+
+
+
+% sets
+\newcommand{\atA}{\mathbb{A}}
+\newcommand{\atB}{\mathbb{B}}
+
+\newcommand{\prF}{\mathbb{F}}
+\newcommand{\prG}{\mathbb{G}}
+
+
+\newcommand{\PE}{\mathbf{PE}}
+\newcommand{\TPE}{\mathbf{TPE}}
+\newcommand{\IBE}{\mathbf{IBE}}
+\newcommand{\FPE}{\prF\text{-}\PE}
+\newcommand{\GPE}{\prG\text{-}\PE}
+\newcommand{\tTPE}{\tau\text{-}\TPE}
+\newcommand{\ttTPE}{$\tau$-TPE\;}
+
+%\newcommand{\att}{\cA}
+%\newcommand{\prd}{\cP}
+%\usepackage{graphicx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+\newcommand{\remove}[1]{}
+\newcommand{\num}[1]{{\bf (#1)}}
+
+\newcommand{\ol}{\overline}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\nin}{\not \in}
+
+\newcommand{\es}{\varnothing} % empty set
+\newcommand{\se}{\subseteq}
+\newcommand{\nse}{\not \se}
+\newcommand{\nf}[2]{\nicefrac{#1}{#2}}
+\newcommand{\rv}[1]{\mathbf{#1}} % Random Variable
+\newcommand{\rvV}{\rv{V}}
+\newcommand{\mal}[1]{\widehat{#1}} % Malicious version of the alg
+
+
+
+
+%%%  English %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\etal}{et~al.\ }
+\newcommand{\aka}{also known as,\ }
+\newcommand{\resp}{resp.,\ }
+\newcommand{\ie}{i.e.,\ }
+\newcommand{\wolog}{w.l.o.g.\ }
+\newcommand{\Wolog}{W.l.o.g.\ }
+\newcommand{\eg}{e.g.,\ }
+\newcommand{\wrt} {with respect to\ }
+\newcommand{\cf}{{cf.,\ }}
+
+%%%  math %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\round}[1]{\lfloor #1 \rceil}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\angles}[1]{\langle #1 \rangle}
+\newcommand{\parens}[1]{( #1 )}
+\newcommand{\bracks}[1]{[ #1 ]}
+\newcommand{\bra}[1]{\langle#1\rvert}
+\newcommand{\ket}[1]{\lvert#1\rangle}
+\newcommand{\set}[1]{\{ #1 \}}
+
+\newcommand{\adjRound}[1]{\left\lfloor #1 \right\rceil} % Adjusted Round
+\newcommand{\adjCeil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\adjFloor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\adjAngles}[1]{\left\langle #1 \right\rangle}
+\newcommand{\adjParens}[1]{\left( #1 \right)}
+\newcommand{\adjBracks}[1]{\left[ #1 \right]}
+\newcommand{\adjBra}[1]{\left\langle#1\right\rvert}
+\newcommand{\adjKet}[1]{\left\lvert#1\right\rangle}
+\newcommand{\adjSet}[1]{\left\{ #1 \right\}}
+\newcommand{\half}{\tfrac{1}{2}}
+\newcommand{\third}{\tfrac{1}{3}}
+\newcommand{\quarter}{\tfrac{1}{4}}
+\newcommand{\eqdef}{:=}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\xor}{\oplus}
+\newcommand{\tensor}{\otimes}
+\newcommand{\getsr}{\mathbin{\stackrel{\mbox{\,\tiny \$}}{\gets}}}
+\newcommand{\from}{\gets}
+\newcommand{\size}[1]{\left|#1\right|}
+\newcommand{\abs}[1]{\size{#1}}
+\newcommand{\norm}[1]{\abf{#1}}
+\newcommand{\To}{\mapsto}
+\newcommand{\mcom}{\, ,}
+\newcommand{\mper}{\, .}
+\newcommand{\sign}{\ensuremath {\pm 1}}
+\newcommand{\nbyn}{\ensuremath {n \times n}}
+\renewcommand{\L}{\ensuremath L\:}
+\newcommand{\LA}{\ensuremath L_A}
+
+%%%% Font Abbreviations
+
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\F}{{\mathbb F}}
+
+\newcommand{\Adv}{\mathbf{Adv}}
+
+
+\newcommand{\cA}{{\mathcal A}}
+\newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cE}{{\mathcal E}}
+\newcommand{\cF}{{\mathcal F}}
+\newcommand{\cG}{{\mathcal G}}
+\newcommand{\cH}{{\mathcal H}}
+\newcommand{\cI}{{\mathcal I}}
+\newcommand{\cJ}{{\mathcal J}}
+\newcommand{\cK}{{\mathcal K}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cM}{{\mathcal M}}
+\newcommand{\cN}{{\mathcal N}}
+\newcommand{\cO}{{\mathcal O}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cR}{{\mathcal R}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\cU}{{\mathcal U}}
+\newcommand{\cV}{{\mathcal V}}
+\newcommand{\cW}{{\mathcal W}}
+\newcommand{\cX}{{\mathcal X}}
+\newcommand{\cY}{{\mathcal Y}}
+\newcommand{\cZ}{{\mathcal Z}}
+
+\newcommand{\bfA}{\mathbf{A}}
+\newcommand{\bfB}{\mathbf{B}}
+\newcommand{\bfC}{\mathbf{C}}
+\newcommand{\bfD}{\mathbf{D}}
+\newcommand{\bfE}{\mathbf{E}}
+\newcommand{\bfF}{\mathbf{F}}
+\newcommand{\bfG}{\mathbf{G}}
+\newcommand{\bfH}{\mathbf{H}}
+\newcommand{\bfI}{\mathbf{I}}
+\newcommand{\bfJ}{\mathbf{J}}
+\newcommand{\bfK}{\mathbf{K}}
+\newcommand{\bfL}{\mathbf{L}}
+\newcommand{\bfM}{\mathbf{M}}
+\newcommand{\bfN}{\mathbf{N}}
+\newcommand{\bfO}{\mathbf{O}}
+\newcommand{\bfP}{\mathbf{P}}
+\newcommand{\bfQ}{\mathbf{Q}}
+\newcommand{\bfR}{\mathbf{R}}
+\newcommand{\bfS}{\mathbf{S}}
+\newcommand{\bfT}{\mathbf{T}}
+\newcommand{\bfU}{\mathbf{U}}
+\newcommand{\bfV}{\mathbf{V}}
+\newcommand{\bfW}{\mathbf{W}}
+\newcommand{\bfX}{\mathbf{X}}
+\newcommand{\bfY}{\mathbf{Y}}
+\newcommand{\bfZ}{\mathbf{Z}}
+
+
+\newcommand{\bfa}{\mathbf{a}}
+\newcommand{\bfb}{\mathbf{b}}
+\newcommand{\bfc}{\mathbf{c}}
+\newcommand{\bfd}{\mathbf{d}}
+\newcommand{\bfe}{\mathbf{e}}
+\newcommand{\bff}{\mathbf{f}}
+\newcommand{\bfg}{\mathbf{g}}
+\newcommand{\bfh}{\mathbf{h}}
+\newcommand{\bfi}{\mathbf{i}}
+\newcommand{\bfj}{\mathbf{j}}
+\newcommand{\bfk}{\mathbf{k}}
+\newcommand{\bfl}{\mathbf{l}}
+\newcommand{\bfm}{\mathbf{m}}
+\newcommand{\bfn}{\mathbf{n}}
+\newcommand{\bfo}{\mathbf{o}}
+\newcommand{\bfp}{\mathbf{p}}
+\newcommand{\bfq}{\mathbf{q}}
+\newcommand{\bfr}{\mathbf{r}}
+\newcommand{\bfs}{\mathbf{s}}
+\newcommand{\bft}{\mathbf{t}}
+\newcommand{\bfu}{\mathbf{u}}
+\newcommand{\bfv}{\mathbf{v}}
+\newcommand{\bfw}{\mathbf{w}}
+\newcommand{\bfx}{\mathbf{x}}
+\newcommand{\bfy}{\mathbf{y}}
+\newcommand{\bfz}{\mathbf{z}}
+
+%\usepackage{bm}
+% note the short forms: eps and ups
+\newcommand{\bfalpha}{{\bm \alpha}}
+\newcommand{\bfbeta}{{\bm \beta}}
+\newcommand{\bfgamma}{{\bm \gamma}}
+\newcommand{\bfdelta}{{\bm \delta}}
+\newcommand{\bfeps}{{\bm \epsilon}}
+\newcommand{\bfveps}{{\bm \varepsilon}}
+\newcommand{\bfzeta}{{\bm \zeta}}
+\newcommand{\bftheta}{{\bm \theta}}
+\newcommand{\bfvtheta}{{\bm \vartheta}}
+\newcommand{\bfiota}{{\bm \iota}}
+\newcommand{\bfkappa}{{\bm \kappa}}
+\newcommand{\bflambda}{{\bm \lambda}}
+\newcommand{\bfmu}{{\bm \mu}}
+\newcommand{\bfnu}{{\bm \nu}}
+\newcommand{\bfxi}{{\bm \xi}}
+\newcommand{\bfoo}{{\bm \o}}% not to confuse with regular o
+\newcommand{\bfpi}{{\bm \pi}}
+\newcommand{\bfvarpi}{{\bm \varpi}}
+\newcommand{\bfrho}{{\bm \rho}}
+\newcommand{\bfvrho}{{\bm \varrho}}
+\newcommand{\bfsigma}{{\bm \sigma}}
+\newcommand{\bfvsigma}{{\bm \varsigma}}
+\newcommand{\bftau}{{\bm \tau}}
+\newcommand{\bfups}{{\bm \upsilon}}
+\newcommand{\bfphi}{{\bm \phi}}
+\newcommand{\bfvphi}{{\bm \varphi}}
+\newcommand{\bfchi}{{\bm \chi}}
+\newcommand{\bfpsi}{{\bm \psi}}
+\newcommand{\bfomega}{{\bm \omega}}
+
+
+\newcommand{\sfA}{\mathsf{A}}
+\newcommand{\sfB}{\mathsf{B}}
+\newcommand{\sfC}{\mathsf{C}}
+\newcommand{\sfD}{\mathsf{D}}
+\newcommand{\sfE}{\mathsf{E}}
+\newcommand{\sfF}{\mathsf{F}}
+\newcommand{\sfG}{\mathsf{G}}
+\newcommand{\sfH}{\mathsf{H}}
+\newcommand{\sfI}{\mathsf{I}}
+\newcommand{\sfJ}{\mathsf{J}}
+\newcommand{\sfK}{\mathsf{K}}
+\newcommand{\sfL}{\mathsf{L}}
+\newcommand{\sfM}{\mathsf{M}}
+\newcommand{\sfN}{\mathsf{N}}
+\newcommand{\sfO}{\mathsf{O}}
+\newcommand{\sfP}{\mathsf{P}}
+\newcommand{\sfQ}{\mathsf{Q}}
+\newcommand{\sfR}{\mathsf{R}}
+\newcommand{\sfS}{\mathsf{S}}
+\newcommand{\sfT}{\mathsf{T}}
+\newcommand{\sfU}{\mathsf{U}}
+\newcommand{\sfV}{\mathsf{V}}
+\newcommand{\sfW}{\mathsf{W}}
+\newcommand{\sfX}{\mathsf{X}}
+\newcommand{\sfY}{\mathsf{Y}}
+\newcommand{\sfZ}{\mathsf{Z}}
+
+\newcommand{\sfa}{\mathsf{a}}
+\newcommand{\sfb}{\mathsf{b}}
+\newcommand{\sfc}{\mathsf{c}}
+\newcommand{\sfd}{\mathsf{d}}
+\newcommand{\sfe}{\mathsf{e}}
+\newcommand{\sff}{\mathsf{f}}
+\newcommand{\sfg}{\mathsf{g}}
+\newcommand{\sfh}{\mathsf{h}}
+\newcommand{\sfi}{\mathsf{i}}
+\newcommand{\sfj}{\mathsf{j}}
+\newcommand{\sfk}{\mathsf{k}}
+\newcommand{\sfl}{\mathsf{l}}
+\newcommand{\sfm}{\mathsf{m}}
+\newcommand{\sfn}{\mathsf{n}}
+\newcommand{\sfo}{\mathsf{o}}
+\newcommand{\sfp}{\mathsf{p}}
+\newcommand{\sfq}{\mathsf{q}}
+\newcommand{\sfr}{\mathsf{r}}
+\newcommand{\sfs}{\mathsf{s}}
+\newcommand{\sft}{\mathsf{t}}
+\newcommand{\sfu}{\mathsf{u}}
+\newcommand{\sfv}{\mathsf{v}}
+\newcommand{\sfw}{\mathsf{w}}
+\newcommand{\sfx}{\mathsf{x}}
+\newcommand{\sfy}{\mathsf{y}}
+\newcommand{\sfz}{\mathsf{z}}
+\newcommand{\eps}{\varepsilon}
+%\newcommand{\e}{\epsilon}
+\newcommand{\veps}{\varepsilon}
+%\newcommand{\vare}{\varepsilon}
+\newcommand{\vphi}{\varphi}
+\newcommand{\vsigma}{\varsigma}
+\newcommand{\vrho}{\varrho}
+\newcommand{\vpi}{\varpi}
+\newcommand{\tO}{\widetilde{O}}
+\newcommand{\tOmega}{\widetilde{\Omega}}
+\newcommand{\tTheta}{\widetilde{\Theta}}
+\newcommand{\field}{\ensuremath \Bbbk}
+\newcommand{\reals}{\ensuremath \mathbb{R}}
+
+%%%%%%%%%%%%%%%% Operators %%%%%%
+
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\loglog}{\operatorname{loglog}}
+\newcommand{\GF}{\operatorname{GF}}
+\newcommand{\Exp}{\operatorname*{\mathbb{E}}}
+\newcommand{\Ex}{\Exp}
+%\newcommand{\view}{\operatorname{view}}
+\newcommand{\View}[1]{\mathsf{View}\angles{#1}}
+\newcommand{\Var}{\operatorname*{Var}}
+\newcommand{\ShH}{\operatorname{H}}
+\newcommand{\maxH}{\operatorname{H_0}}
+\newcommand{\minH}{\operatorname{H_{\infty}}}
+\newcommand{\Enc}{\operatorname{Enc}}
+\newcommand{\Setup}{\operatorname{Setup}}
+\newcommand{\KGen}{\operatorname{KGen}}
+\newcommand{\Dec}{\operatorname{Dec}}
+\newcommand{\Sign}{\operatorname{Sign}}
+\newcommand{\Ver}{\operatorname{Ver}}
+\newcommand{\Gen}{\operatorname{Gen}}
+\newcommand{\negl}{\operatorname{negl}}
+\newcommand{\Supp}{\operatorname{Supp}}
+\newcommand{\maj}{\operatorname*{maj}}
+\newcommand{\argmax}{\operatorname*{argmax}}
+\newcommand{\Image}{\operatorname{Im}}
+
+
+%%% Computational Problems %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\SAT}{\mathrm{SAT}}
+\newcommand{\UNSAT}{\mathrm{UNSAT}}
+%\newcommand{\ED}{\mathrm{ED}} % Entropy Difference
+%\newcommand{\GapSVP}{\mathrm{GapSVP}}
+%\newcommand{\GapSIVP}{\mathrm{GapSIVP}}
+%\newcommand{\GapCVP}{\mathrm{GapCVP}}
+%\newcommand{\COLOR}{\mathrm{3COL}}
+
+%%% Complexity Classes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\class}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\coclass}[1]{\class{co\mbox{-}#1}} %  their complements
+\newcommand{\prclass}[1]{\class{Pr#1}}
+\newcommand{\PPT}{\class{PPT}}
+\newcommand{\BPP}{\class{BPP}}
+\newcommand{\NC}{\class{NC}}
+\newcommand{\AC}{\class{AC}}
+\newcommand{\NP}{\ensuremath{\class{NP}}}
+\newcommand{\coNP}{\ensuremath{\coclass{NP}}}
+\newcommand{\RP}{\class{RP}}
+\newcommand{\coRP}{\coclass{RP}}
+\newcommand{\ZPP}{\class{ZPP}}
+\newcommand{\IP}{\class{IP}}
+\newcommand{\coIP}{\coclass{IP}}
+\newcommand{\AM}{\class{AM}}
+\newcommand{\coAM}{\class{coAM}}
+\newcommand{\MA}{\class{MA}}
+\renewcommand{\P}{\class{P}}
+\newcommand\prBPP{\prclass{BPP}}
+\newcommand\prRP{\prclass{RP}}
+%\newcommand\prP{\prclass{P}}
+\newcommand{\Ppoly}{\class{P/poly}}
+\newcommand{\DTIME}{\class{DTIME}}
+\newcommand{\ETIME}{\class{E}}
+\newcommand{\BPTIME}{\class{BPTIME}}
+\newcommand{\AMTIME}{\class{AMTIME}}
+\newcommand{\coAMTIME}{\class{coAMTIME}}
+\newcommand{\NTIME}{\class{NTIME}}
+\newcommand{\coNTIME}{\class{coNTIME}}
+\newcommand{\AMcoAM}{\class{AM} \cap \class{coAM}}
+\newcommand{\NPcoNP}{\class{N} \cap \class{coN}}
+\newcommand{\EXP}{\class{EXP}}
+\newcommand{\SUBEXP}{\class{SUBEXP}}
+\newcommand{\qP}{\class{\wt{P}}}
+\newcommand{\PH}{\class{PH}}
+\newcommand{\NEXP}{\class{NEXP}}
+\newcommand{\PSPACE}{\class{PSPACE}}
+%\newcommand{\E}{\class{E}}
+\newcommand{\NE}{\class{NE}}
+\newcommand{\coNE}{\class{coNE}}
+\newcommand{\SharpP}{\class{\#P}}
+\newcommand{\prSZK}{\prclass{SZK}}
+\newcommand{\BPPSZK}{\BPP^{\SZK}}
+\newcommand{\TFAM}{\class{TFAM}}
+\newcommand{\RTFAM}{{\R\text{-}\class{TUAM}}}
+% relations decidable by a randomized algorithm
+\newcommand{\FBPP}{\class{BPP}}
+% relations decidable by a RTFAM oracle
+\newcommand{\BPPR}{\FBPP^{\RTFAM}}
+\newcommand{\TFNP}{\mathbf{TFNP}}
+\newcommand{\MIP}{\mathbf{MIP}}
+% zero-knowledge complexity classes
+\newcommand{\ZK}{\class{ZK}}
+\newcommand{\SZK}{\class{SZK}}
+\newcommand{\SZKP}{\class{SZKP}}
+\newcommand{\SZKA}{\class{SZKA}}
+\newcommand{\CZKP}{\class{CZKP}}
+\newcommand{\CZKA}{\class{CZKA}}
+\newcommand{\coSZKP}{\coclass{SZKP}}
+\newcommand{\coSZKA}{\coclass{SZKA}}
+\newcommand{\coCZKP}{\coclass{CZKP}}
+\newcommand{\coCZKA}{\coclass{CZKA}}
+\newcommand{\NISZKP}{\class{NI\mbox{-}SZKP}}
+\newcommand{\phcc}{\ensuremath \PH^{\mathrm{cc}}}
+\newcommand{\pspacecc}{\ensuremath \PSPACE^{\mathrm{cc}}}
+\newcommand{\sigcc}[1]{\ensuremath \class{\Sigma}^{\mathrm{cc}}_{#1}}
+\newcommand{\aco}{\ensuremath \AC^0}
+\newcommand{\ncone}{\ensuremath \NC^1}
+
+%%%%% Theorem environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\ifllncs
+\newtheorem{aclaim}{Claim}
+%\fi
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{plain}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{fact}[theorem]{Fact}
+\theoremstyle{definition}
+
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm1}[theorem]{Algorithm}
+%\newtheorem{protocol}[theorem]{Protocol} defined below
+\newtheorem{assumption}[theorem]{Assumption}
+
+\theoremstyle{definition}
+%\newtheorem{remark}[theorem]{Remark}
+\newtheorem{note}[theorem]{Note}
+
+
+% Protocol env
+\newcommand{\sdotfill}{\textcolor[rgb]{0.8,0.8,0.8}{\dotfill}} %change to \cdotfill later
+\newenvironment{protocol}{\begin{proto}}{\vspace{-\topsep}\sdotfill\end{proto}}
+
+\makeatletter
+\def\th@protocol{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{protocol}
+
+\newtheorem{proto}[theorem]{Protocol}
+\newtheorem{protoc}[theorem]{Protocol}
+\newenvironment{protocolS}{\begin{protoc}}{\vspace{-\topsep}\sdotfill\end{protoc}}
+
+% state/restate
+\newcommand{\namedref}[2]{#1~\ref{#2}}
+
+\newcommand{\torestate}[3]{%
+\expandafter \def \csname BBRESTATE #2 \endcsname{#3}
+\theoremstyle{plain}
+\newtheorem{BBRESTATETHMNUM#2}[theorem]{#1}
+\begin{BBRESTATETHMNUM#2}\label{#2}\csname BBRESTATE #2 \endcsname   \end{BBRESTATETHMNUM#2}
+\newtheorem*{BBRESTATETHMNONNUM#2}{\namedref{#1}{#2}}
+}
+
+\newcommand{\restate}[1]{\begin{BBRESTATETHMNONNUM#1}[Restated] \csname BBRESTATE #1 \endcsname
+\end{BBRESTATETHMNONNUM#1}}
+
+%%% refs macros (hopefully will help in transforming to pdf) %%%%%%
+
+
+\newcommand{\theoremref}[1]{Theorem~\ref{#1}}
+\newcommand{\sectionref}[1]{Sect.~\ref{#1}}
+\newcommand{\definitionref}[1]{Definition~\ref{#1}}
+\newcommand{\defref}[1]{Definition~\ref{#1}}
+\newcommand{\propref}[1]{Proposition~\ref{#1}}
+\newcommand{\stepref}[1]{Step~\ref{#1}}
+\newcommand{\figureref}[1]{Fig.~\ref{#1}}
+\newcommand{\lemmaref}[1]{Lemma~\ref{#1}}
+\newcommand{\claimref}[1]{Claim~\ref{#1}}
+\newcommand{\remarkref}[1]{Remark~\ref{#1}}
+\newcommand{\corollaryref}[1]{Corollary~\ref{#1}}
+\newcommand{\inequalityref}[1]{Inequality~\ref{#1}}
+\newcommand{\constructionref}[1]{Construction~\ref{#1}}
+\newcommand{\itemref}[1]{Item~\ref{#1}}
+\newcommand{\propertyref}[1]{Property~\ref{#1}}
+\newcommand{\protocolref}[1]{Protocol~\ref{#1}}
+\newcommand{\algorithmref}[1]{Algorithm~\ref{#1}}
+\newcommand{\appendixref}[1]{Appendix~\ref{#1}} 

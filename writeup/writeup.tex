@@ -109,18 +109,39 @@ To convey the non-triviality of this problem, two common-sense approaches will b
 
 \begin{enumerate}
 \item{Only Group Queries} If individual privacy is the concern, why not only allow group-level queries? As an example, consider the group-level query: "How many patients in this ward have diabetes?" An easy way to violate the privacy of patient A is to follow up the previous query with: "How many patients aside from patient A have diabetes?" If the number from the first query is greater than the number from the second, patient A must have diabetes, and must not otherwise. Clearly, the privacy of patient A has been compromised.
-\item{Random Noise} Why not obfuscate the data returned by introducing random noise to the output? With medical data, there is always the risk that a perturbation would lead to an incorrect diagnosis or treatment. Additionally, the true value of the output could be determined statistically using repeated queries.
+\item{Random Noise} Why not obfuscate the data returned by introducing random noise to the output? With medical data, there is always the risk that a random perturbation would lead to an incorrect diagnosis or treatment. Additionally, the true value of the output could be determined statistically using repeated queries.
 \end{enumerate}
 
 \paragraph{}
 In order to propose a solution that is superior to those described above, the problem must be formally stated. At a high level, Differential Privacy is the requirement that the result of a query should not reveal the prescence or abscence of any individual record in the input dataset. Informally, the outcome of a query should be nearly equally likely if the dataset has your information in it, as to if it did not.
-Formally, given a dataset $A$ and $B$, $A$ and $B$ are said to be \textit{adjacent} if there is a single record $r$ that is in one but not the other. For adjacent datasets $A$ and $B$, a query $Q$ has $\epsilon$-differential privacy if for any adjacent datasets $A$ and $B$, and any subset of possible outcomes $Range(Q)$, 
 
-$ Pr[Q(x) in C] \leq exp(\epsilon) \
+\paragraph{}
+Formally, given a dataset $A$ and $B$, $A$ and $B$ are said to be \textit{adjacent} if there is a single record $r$ that is in one but not the other. For adjacent datasets $A$ and $B$, a query $Q$ has $\epsilon$-differential privacy if for any adjacent datasets $A$ and $B$, and any subset $C$ of possible outcomes $Range(Q)$, 
 
-\paragraph{Properties}
+$Pr[Q(A) in C] \leq exp(\epsilon) \times Pr[M(B) in C]$
+
+\paragraph{Laplace Noise}
+A function $f$ can be made to satisfy $\epsilon$-differential privacy by adding Laplace noise to it. This noise takes the form of a variable $L$ that follows the Laplace Distribution. 
+
+$f(x) + L$ where L is $Laplace(0, \sigma)$, $\sigma \geq \frac{\delta f}{\epsilon}$, and $\delta f = max(||f(x) - f(x')||_1)$.
+
+The PDF for the Laplace Distribution is defined as:
+
+$\frac{1}{2b} \times exp(-\frac{|x - \mu|}{b})$
+
+where $b$ is a scaling factor. The Manhattan norm is defined as: $||x|_1 = \frac{1}{n} \sum_1^n |x_1|$.
+
+\paragraph{}
+
+As an example, consider the function $f$ that computes the average weight of a patient cohort. Now consider two adjacent datasets of size $4$ $P1$ and $P2$ that differ by only a single patient's data. $P1 = \{110, 130, 145, 210\}$ and $P2 = \{110, 130, 145, 189\}$ We will calculate the average weight of $P1$ while ensuring $\epsilon$-differential privacy. As the minimum weight is $110$ and the maximum is $210$, $\delta f = \frac{210 - 110}{4} = 25$. Adding the term $L$, where $L$ is the result of sampling $Laplace(0, \frac{25}{\epsilon})$, would preserve the privacy of the patient that is in $P1$ but not $P2$.
+
+\paragraph{Extending Diff Priv}
+
+Any algorithm that satisfies $\epsilon$-differential privacy can be augmented to ensure privacy for a group of size $s$ simply by scaling the privacy budget $\epsilon$ by $s$.
 
 \paragraph{Privacy in Pharmacogenetics}
+
+
 
 \end{multicols}
 \begin{thebibliography}{9}

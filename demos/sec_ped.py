@@ -14,22 +14,26 @@ Output: |Diff(A, B)| is calculated as the k-median of l-mean of random sampling 
 1. For j in (1..k)
    a. For i in (1..l)
       i. A and B use the (same) random string to randomly pick a function h from the family of hash functions.
-      ii. A computes d_A = Sum(s \eof A) h(s), whereas B computes d_b = Sum(s \eof B) h(s), independently.
+      ii. A computes d_A = Sum_{s \in A} h(s) and B computes d_b = Sum_{s \in B} h(s), both independently.
       iii. A and B securely compute D_i = (d_A - d_b)^2
    b. A and B securely compute D^_j = Sum(i -> l) D_i / l
 2. A and B securely compute the median Z of D^_1 ... D^_k
 3. Output Z
 '''
 def main():
+    print("Reading ref genome from: ./genome_ref.txt")
     ref_gen = open("./genome_ref.txt", "r").read()
+    print("Reading genome A from: ./genome_A.txt")
     A_gen = open("./genome_A.txt", "r").read()
+    print("Reading genome B from: ./genome_B.txt")
     B_gen = open("./genome_B.txt", "r").read()
     A_min_edits = compute_min_edits(A_gen, ref_gen)
     B_min_edits = compute_min_edits(B_gen, ref_gen)
     
-    pub_rand_str = ["123456789", "abcdefg", "jha", "mahmoody", "cryptography"]
-    l = 200
-    k = 20
+    pub_rand_str = ["19528620395885535", "ajajcwdeiqoksmzlhtes", "jha", "mahmoody", "cryptography"]
+    epsilon = float(input("Enter privacy budget ε: ") or "0.1")
+    l = int(1/(epsilon**2))
+    k = 2000
     D_hat = []
     bar = Bar('Computing...     ', max=k) 
     for j in range(1,k+1):

@@ -34,10 +34,10 @@ G => 11
 This means a single byte can represent a sequence of 4 base-pairs. Consequently, the Human Genome is about 800 megabytes long. Unfortunately, this is merely a theoretical lower bound. In practice, the average sequenced genome occupies around 200 gigabytes of disk space. This is a byproduct of how modern genetic sequencers work and the file format used to store the resulting data.
 
 \paragraph{}
-This unwieldy size necessitated an optimization that takes advantage of the large percentage of the genome sequence that is conserved between individual humans. If a comparison needs to be made between two different genome sequences, a scientist can simply analyze how each genome sequence differs from a \textit{reference genome sequence} rather than directly compare the base-pair sequences for each. This allows for a significant reduction in size. A fresh-off-the-sequencer genome is usually stored in a ~200 GB FASTQ file, while the ``diff'' optimized storage method is stored in a variant (``.vcf'') file. This ``.vcf'' file usually only occupies around 125 MB which is more space efficient by orders of magnitude.
+This unwieldy size necessitated an optimization that takes advantage of the large percentage of the genome sequence that is conserved between individual humans. If a comparison needs to be made between two different genome sequences, a scientist can simply analyze how each genome sequence differs from a \textit{reference genome sequence} rather than directly compare the base-pair sequences for each. This allows for a significant reduction in size. A fresh-off-the-sequencer genome is usually stored in a ~200 GB FASTQ file, while the ``diff'' optimized storage method is stored in a variant (\texttt{.vcf}) file. This \texttt{.vcf} file usually only occupies around 125 MB which is more space efficient by orders of magnitude.
 
 \paragraph{}
-An analogous idea in computer science is that of \textit{edit distance}. Put simply, the edit distance between two strings is the number of characters that must be substituted, inserted, or deleted to change one of the strings into another.
+An analogous idea in computer science is that of \textit{edit distance}. Put simply, the edit distance between two strings is the number of characters that must be substituted, inserted, or deleted to change one of the strings into the other.
 
 \paragraph{}
 It is often useful to calculate the edit distance between two different genomes. If a patient is diagnosed with a disease, a physician may want to see the prognosis of other genetically similar patients with the disease.
@@ -66,14 +66,13 @@ The algorithm is as follows:
 \end{enumerate}
 
 \paragraph{}
-This third step has it's own multistep protocol. While the technical details can be found in the implementation included with this report, at a high level the protocol works by ``squeezing'' each set of edit sequences into an integer. This ``squeezing'' is performed by taking the sum of the binary hash ($h : edit \rightarrow \{-1, 1\}$) of each edit in the set. Once the ``squeezed'' values $d_A$ and $d_B$ are computed, square of the difference is computed $(d_A - d_B)^2$. This squeezing process is performed $l$ times, and then the $k$-median is taken. Here, $l$ and $k$ are used to bound the accuracy and the efficiency.
+This third step has it's own multistep protocol. While the technical details can be found in the implementation included with this report, at a high level the protocol works by ``squeezing'' each set of edit sequences into an integer. This ``squeezing'' is performed by taking the sum of the binary hash ($h : edit \rightarrow \{-1, 1\}$) of each edit in the set. Once the ``squeezed'' values $d_A$ and $d_B$ are computed, the square of the difference is securely computed $(d_A - d_B)^2$. This squeezing process is performed $l$ times, and then the $k$-median is securely computed. Here, $l$ and $k$ are used to bound the accuracy and the efficiency.
 
 \paragraph{}
 The above algorithm is implemented in \texttt{sec\_ped.py} contained in the \texttt{demos} directory (where all other demos will be located). As a comparison for the accuracy of the secure computation demo, an unsecure algorithm is implemented in \texttt{unsec\_ped.py}.
 
-This approximation process's accuracy is aided by the special distribution of human genome sequences.
-
-For any two suitably unrelated individuals:
+\paragraph{}
+This approximation process's accuracy is aided by the special distribution of human genome sequences. For any two suitably unrelated individuals:
 
 \begin{enumerate}
 \item An overwhelming majority of their sequences are conserved, at least 99\%
@@ -91,10 +90,10 @@ To convey the non-triviality of this problem, two common-sense approaches will b
 
 \begin{enumerate}
 \item \textbf{Only Group Queries} If individual privacy is the concern, why not only allow group-level queries? As an example, consider the group-level query: "How many patients in this ward have diabetes?" An easy way to violate the privacy of patient A is to follow up the previous query with: "How many patients aside from patient A have diabetes?" If the number from the first query is greater than the number from the second, patient A must have diabetes, and must not otherwise. Clearly, the privacy of patient A has been compromised.
-\item \textbf{Random Noise} Why not obfuscate the data returned by introducing random noise to the output? With medical data, there is always the risk that a random perturbation would lead to an incorrect diagnosis or treatment. Additionally, the true value of the output could be determined statistically using repeated queries.
+\item \textbf{Random Noise} Why not obfuscate the data returned by introducing random noise to the output? With repeated queries, the true value of the output could be determined statistically.
 \end{enumerate}
 
-\paragraph{Definition}
+\paragraph{Problem Statement}
 In order to propose a solution that is superior to those described above, the problem must be formally stated. At a high level, Differential Privacy is the requirement that the result of a query should not reveal the prescence or abscence of any individual record in the input dataset. Informally, the outcome of a query should be nearly equally likely if the dataset has your information in it, as to if it did not.
 
 \paragraph{Formal Definition}
@@ -103,12 +102,13 @@ Formally, given a dataset $A$ and $B$, $A$ and $B$ are said to be \textit{adjace
 \paragraph{Laplace Noise}
 A function $f$ can be made to satisfy $\epsilon$-differential privacy by adding Laplace noise to it. This noise takes the form of a variable $L$ that follows the Laplace Distribution. 
 
-$f(x) + L$ where $L = Laplace(0, \sigma)$, $\sigma \geq \frac{\Delta f}{\epsilon}$, and $\Delta f = \max(||f(x) - f(x')||_1)$.
+\bigbreak
+\centerline{$f(x) + L$ where $L = Laplace(0, \sigma)$, $\sigma \geq \frac{\Delta f}{\epsilon}$, and $\Delta f = \max(||f(x) - f(x')||_1)$}
+\bigbreak
 
 The PDF for the Laplace Distribution is defined as: $\frac{1}{2b} \times \exp(-\frac{|x - \mu|}{b})$ where $b$ is a scaling factor. The Manhattan norm is defined as: $||x|_1 = \frac{1}{n} \sum_1^n |x_1|$.
 
 \paragraph{}
-
 As an example, consider the function $f$ that computes the average weight of a patient cohort. Now consider two adjacent datasets of size $4$ $P1$ and $P2$ that differ by only a single patient's data. $P1 = \{110, 130, 145, 210\}$ and $P2 = \{110, 130, 145, 189\}$ We will calculate the average weight of $P1$ while ensuring $\epsilon$-differential privacy. As the minimum weight is $110$ and the maximum is $210$, $\Delta f = \frac{210 - 110}{4} = 25$. Adding the term $L$, where $L$ is the result of sampling $Laplace(0, \frac{25}{\epsilon})$, would preserve the privacy of the patient that is in $P1$ but not $P2$.
 
 \paragraph{Extending Differential Privacy}

@@ -10,14 +10,27 @@ The field of bioinformatics exists at the intersection of biological research an
 
 Much of bioinformatics revolves around genetic information. The potency of genetic data lies partially in it's ability to uniquely identify an individual and provide information on various social groupings that individual is a member of, whether it be family, disease group, or ethnic group. This property allows an individual's genetic data to be predictive of not only their health, but the health of others. The analyis of genetic data thus has tremendous potency, both to help others and to compromize privacy. This Systematization of Knowledge paper aims to summarize the state of the subset of bioinformatics concerned with ensuring both the privacy of individuals.
 
-
 \section{Garbled Circuits}
 
+A de facto requirement to providing adequate privacy for bioinformatics applications is secure computation. In secure computation, there are two or more parties who each have some private data, and it is necessary to answer a question that relies on everyone's data. For example, in a vote, the majority winner must be identified. In an auction, the winning bid must be identified. Simultaneously, however, each party wants to maximize their privacy, i.e. each voter doesn't want who they voted for to be revealed.
 
+\paragraph{Formal Definition}
+There are $n$ parties, where $x_i$ is the private input of the $i$th party, and there is a function $f(x_1, x_2, ..., x_n)$ that everyone wishes to compute. 
 
-\paragraph{Motivation}
+For the two party case, it can be shown that the output of $f$ can be determined without leaking any information about the private inputs for any arbitrary function $f$.
 
-\paragraph{Setup}
+The two parties are traditionally named Alice and Bob, where Alice will have secret information $a$, Bob will have secret information $b$, and the funciton $f$ is a public function whose output Alice and Bob both want to know without revealing additionaly information about $a$ or $b$ respectively. As an example, Alice and Bob have both just recieved their MCAT scores, and want to know who scored higher on the exam without revealing their exact scores. Here, $a$ is Alice's score, while $b$ is Bob's score. The function $f$ they wish to securely compute is:  
+
+\centerline{
+\begin{equation}
+f(a,b)= \begin{cases}
+Alice, & \text{if $a > b$}
+Bob, & \text{if $b < a$}
+same, & \text{otherwise}
+\end{cases}
+\end{equation}
+}
+
 
 \paragraph{Three Securiy Notions}
 

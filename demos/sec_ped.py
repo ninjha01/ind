@@ -35,7 +35,7 @@ def main():
     pub_rand_str = ["19528620395885535", "ajajcwdeiqoksmzlhtes", "jha", "mahmoody", "cryptography"]
     epsilon = float(input("Enter privacy budget epsilon: ") or "0.1")
     l = int(1/(epsilon**2))
-    k = 2000
+    k = 20
     D_hat = []
     bar = Bar('Computing...     ', max=k) 
     for j in range(1,k+1):

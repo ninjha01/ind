@@ -29,6 +29,12 @@ same, & \text{otherwise}.
 \end{cases}
 \end{equation}
 
+\paragraph{Security Guarantee}
+In our imagined scenario, both Alice and Bob will adhere to the \textit{Honest-but-Curious} model. In this model, neither Alice or Bob will lie, and both will follow the protocol. However, both Alice and Bob will analyze any messages sent between them and try to identify the other person's input.
+It is important to note that the assumption that Alice and Bob will not lie is a fairly tenuous one. It is still fairly difficult to build a secure protocol even in this relaxed scenario, and the Honest-but-Curious threat model is often used as stepping stone towards a stronger protocol. This paper shall ignore the existence of malicious adversaries as it relates to secure computation.
+
+https://www.alexirpan.com/2016/02/11/secure-computation.html
+
 \paragraph{Three Security Notions}
 
 \begin{enumerate}

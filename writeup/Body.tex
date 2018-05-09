@@ -21,18 +21,15 @@ For the two party case, it can be shown that the output of $f$ can be determined
 
 The two parties are traditionally named Alice and Bob, where Alice will have secret information $a$, Bob will have secret information $b$, and the funciton $f$ is a public function whose output Alice and Bob both want to know without revealing additionaly information about $a$ or $b$ respectively. As an example, Alice and Bob have both just recieved their MCAT scores, and want to know who scored higher on the exam without revealing their exact scores. Here, $a$ is Alice's score, while $b$ is Bob's score. The function $f$ they wish to securely compute is:  
 
-\centerline{
 \begin{equation}
 f(a,b)= \begin{cases}
-Alice, & \text{if $a > b$}
-Bob, & \text{if $b < a$}
-same, & \text{otherwise}
+Alice, & \text{if $a > b$}.\\
+Bob, & \text{if $b < a$}.\\
+same, & \text{otherwise}.
 \end{cases}
 \end{equation}
-}
 
-
-\paragraph{Three Securiy Notions}
+\paragraph{Three Security Notions}
 
 \begin{enumerate}
 \item \textbf{Obliviousness}
@@ -49,7 +46,7 @@ same, & \text{otherwise}
 \section{Private Edit Distance}
 
 \paragraph{Introduction}
-The Human Genome contains around 3,200,000,000 base pairs, often denoted as 3,200 Mb.~\cite{naturegene} Each base pair can have one of four values: (A, T, C, G) and so two bits are sufficient to represent all base pairs.
+The Human Genome contains around 3,200,000,000 base pairs, often denoted as 3,200 Mb. Each base pair can have one of four values: (A, T, C, G) and so two bits are sufficient to represent all base pairs.
 
 \begin{verbatim}
 A => 00
@@ -65,10 +62,7 @@ This means a single byte can represent a sequence of 4 base-pairs. Consequently,
 This unwieldy size necessitated an optimization that takes advantage of the large percentage of the genome sequence that is conserved between individual humans. If a comparison needs to be made between two different genome sequences, a scientist can simply analyze how each genome sequence differs from a \textit{reference genome sequence} rather than directly compare the base-pair sequences for each. This allows for a significant reduction in size. A fresh-off-the-sequencer genome is usually stored in a ~200 GB FASTQ file, while the ``diff'' optimized storage method is stored in a variant (\texttt{.vcf}) file. This \texttt{.vcf} file usually only occupies around 125 MB which is more space efficient by orders of magnitude.
 
 \paragraph{}
-An analogous idea in computer science is that of \textit{edit distance}. Put simply, the edit distance between two strings is the number of characters that must be substituted, inserted, or deleted to change one of the strings into the other.
-
-\paragraph{}
-It is often useful to calculate the edit distance between two different genomes. If a patient is diagnosed with a disease, a physician may want to see the prognosis of other genetically similar patients with the disease.
+An analogous idea in computer science is that of \textit{edit distance}. Put simply, the edit distance between two strings is the number of characters that must be substituted, inserted, or deleted to change one of the strings into the other. It is often useful to calculate the edit distance between two different genomes. If a patient is diagnosed with a disease, a physician may want to see the prognosis of other genetically similar patients with the disease.
 
 \paragraph{}
 From both a practical and privacy standpoint, it is undesirable to send a patient's entire genome sequence whenever a comparison is required. Because each genome sequence is 200 gigabytes in size, bandwidth will quickly become a bottleneck. Additionally, genome sequences are practically unparalleled in their ability to uniquely identify an individual. Furthermore, they contain sensitive medical data - not only the prescence of congenital diseases but predispositions to a wide swath of additional maladies.
@@ -150,7 +144,7 @@ It is important to note the limitations of the above algorithm, particularly whe
 Using a dataset provided by the \textit{International Warfarin Pharmocogenetics Consortium} (IWPC), researchers at the University of Wisconsin constructed linear regression models designed to guide doctors in dosing. They then proceded to perform model inversion attacks to determine how much sensitive data these models would leak. These \textit{model inversion attack} would take the model and try to predict the prescence or abscence of specific genes in the individual genome. Differential privacy would effectively combat these types of attacks, but at the risk of clinical efficacy. In fact, differential privacy became effective at $\epsilon \leq 1$, but the risk of either mortality or morbidity increased significantly, as can be seen in the figure below. Clearly the effectiveness of Differential Privacy is bounded in by the level of acceptable increase in mortality. 
 
 \begin{figure}[h]
-\includegraphics{universe}
+\includegraphics{warfarin.png}
 \centering
 \caption{Mortality and $\epsilon$}
 \end{figure}

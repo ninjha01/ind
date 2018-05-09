@@ -106,18 +106,28 @@ A function $f$ can be made to satisfy $\epsilon$-differential privacy by adding 
 \centerline{$f(x) + L$ where $L = Laplace(0, \sigma)$, $\sigma \geq \frac{\Delta f}{\epsilon}$, and $\Delta f = \max(||f(x) - f(x')||_1)$}
 \bigbreak
 
-The PDF for the Laplace Distribution is defined as: $\frac{1}{2b} \times \exp(-\frac{|x - \mu|}{b})$ where $b$ is a scaling factor. The Manhattan norm is defined as: $||x|_1 = \frac{1}{n} \sum_1^n |x_1|$.
+The PDF for the Laplace Distribution is defined as: $\frac{1}{2b} \times \exp(-\frac{|x - \mu|}{b})$ where $b$ is a scaling factor. The Manhattan norm is defined as: $||x||_1 = \frac{1}{n} \sum_1^n |x_1|$.
 
 \paragraph{}
 As an example, consider the function $f$ that computes the average weight of a patient cohort. Now consider two adjacent datasets of size $4$ $P1$ and $P2$ that differ by only a single patient's data. $P1 = \{110, 130, 145, 210\}$ and $P2 = \{110, 130, 145, 189\}$ We will calculate the average weight of $P1$ while ensuring $\epsilon$-differential privacy. As the minimum weight is $110$ and the maximum is $210$, $\Delta f = \frac{210 - 110}{4} = 25$. Adding the term $L$, where $L$ is the result of sampling $Laplace(0, \frac{25}{\epsilon})$, would preserve the privacy of the patient that is in $P1$ but not $P2$.
 
 \paragraph{Extending Differential Privacy}
-
 Any algorithm that satisfies $\epsilon$-differential privacy can be augmented to ensure privacy for a group of size $s$ simply by scaling the privacy budget $\epsilon$ by $s$.
 
-\paragraph{Privacy in Pharmacogenetics}
+\paragraph{Limitations}
 
-\begin{thebibliography}{4}
+It is important to note the limitations of the above algorithm, particularly when it is applied to personalized medicine. Personalized medicine can be used to guide doctors in calculating dosages that are tailored to individuals. A strong candidate for personalized dosing is Warfarin, a popular anticoagulant. Both underdoses and overdoses can lead to death, underscoring the importance of finding the correct dose.
+
+\paragraph{}
+Using a dataset provided by the \textit{International Warfarin Pharmocogenetics Consortium} (IWPC), researchers at the University of Wisconsin constructed linear regression models designed to guide doctors in dosing. They then proceded to perform model inversion attacks to determine how much sensitive data these models would leak. These \textit{model inversion attack} would take the model and try to predict the prescence or abscence of specific genes in the individual genome. Differential privacy would effectively combat these types of attacks, but at the risk of clinical efficacy. In fact, differential privacy became effective at $\epsilon \leq 1$, but the risk of either mortality or morbidity increased significantly, as can be seen in the figure below. Clearly the effectiveness of Differential Privacy is bounded in by the level of acceptable increase in mortality. 
+
+\begin{figure}[h]
+\includegraphics{universe}
+\centering
+\caption{Mortality and $\epsilon$}
+\end{figure}
+
+\begin{thebibliography}{5}
   
 \bibitem{naturegene} 
   https://www.nature.com/articles/35057062
@@ -130,5 +140,8 @@ Any algorithm that satisfies $\epsilon$-differential privacy can be augmented to
   
 \bibitem{editdistance}
   http://repositorio.uchile.cl/bitstream\-/handle/2250/126168/Navarro\_Gonzalo\-\_Guided\_tour.pdf
+
+\bibitem{warfarin}
+  https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf
 
 \end{thebibliography}

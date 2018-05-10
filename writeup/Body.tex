@@ -31,24 +31,41 @@ same, & \text{otherwise}.
 
 \paragraph{Security Guarantee}
 In our imagined scenario, both Alice and Bob will adhere to the \textit{Honest-but-Curious} model. In this model, neither Alice or Bob will lie, and both will follow the protocol. However, both Alice and Bob will analyze any messages sent between them and try to identify the other person's input.
+
+\paragraph{}
 It is important to note that the assumption that Alice and Bob will not lie is a fairly tenuous one. It is still fairly difficult to build a secure protocol even in this relaxed scenario, and the Honest-but-Curious threat model is often used as stepping stone towards a stronger protocol. This paper shall ignore the existence of malicious adversaries as it relates to secure computation.
 
-https://www.alexirpan.com/2016/02/11/secure-computation.html
+\paragraph{Ideal World Scenario}
+In order to evaluate the eventual solution, we will compare it to the best case scenario. In this ideal scenario, Alice and Bob would each hand their private data to a trusted third party, Faith. Faith would compute $f(a,b)$ and return the output to Alice and Bob without revealing either input.
 
-\paragraph{Three Security Notions}
+Even this ideal scenario can leak information. To see this, consider $f(a, b) = a + b$. Knowing the output, both Alice and Bob can determine the other's private data. Any proposed solution must therefore not leak very much more information than what can be learned with your own private data and the output of $f$. 
 
+\paragraph{Encryption}
+An concept that will be important to our eventual solution is that of \textit{encryption}. Say you are trying to mail your friend a sensitive document and recieve a response. Additionally, you want to ensure that no one can intercept either package and read the document. A solution to this problem would be for your friend to mail you a lock to which only he has the key. You place your document in a box and an additional lock of your own inside a box, lock it with your friend's lock, and mail it to your friend. Your friend recieves and unlocks the box using his key. He then responds to your document, places it in a box, locks the box with your lock, and sends it. You recieve the box, unlock it with your own key, and read the message. This protocol clearly prevents any eavsdroppers - the rotocol of Symmetric Encryption follows the same structure, switching the boxes and locks for specially chosen functions.
+
+More formally, symmetric encryption involves two functions, an encryptor $Enc$ and a decryptor $Dec$. $Enc_k(m)$ encrypts a message $m$ with a key $k$, producing a ciphertext $c$. $Dec_k(c)$ decrypts the ciphertext $c$ using key $k$. Using the same key to decrypt as was used to decrypt returns back the original message: $Dec_k(Enc_k(m)) = m$. $Enc_k$ is chosen such that given only ciphertext $c$, it is unfeasible to find a key $k$ such that $Dec_k(c)$ returns the original message $m$.
+
+\paragraph{Circuits}
+Another useful concept is that of a circuit. A circuit is simply a representation of a specific computation. More specifically, it is a non-looping sequence of operations on bits such as $AND, NOT, OR, XOR...$. A circuit takes its input through wires encoded bitwise. Likewise, it returns an output bitwise through wires. If a wire carries charge, it is interpreted as a $1$, $0$ if it does not. For every function $f(a,b)$, there exists a circuit that provides the same output.
+
+\paragraph{Garbled Circuits}
+The heart of this solution to the secure computation problem is the garbled circuit. Informally, garbling a circuit is a method of ``encrpting'' the circuit representation of a function $f$ such that it only reveals the output of $f$ and doesn't supply any information about the inputs. The circuit representation of $f$ is used because the encryption occurs at the bitwise operation-level, garbling the $And, NOT, OR, XOR..$ gates. The randomness used to encrypt the garbled circuit will also be used to encrypt the inputs $a$ and $b$ to ensure the neither Alice nor Bob learns anything about the other's input.
+
+The garbling ciruit scheme procedes as follows:
 \begin{enumerate}
-\item \textbf{Obliviousness}
-\item \textbf{Privacy}
-\item \textbf{Authenticity}
+\item Alice and Bob agree on a way to represent $f$ as a circuit $C$.
+\item Alice garbles the circuit $C$ yielding the garbled circuit $\hat{C}$.
+\item Alice encrypts her input $a$ using the same randomness used to produce $\hat{C}$ to yield $\hat{a}$.
+\item Alice and Bob somehow arrange for Bob to encrypt his input $b$ to yield $\hat{b}$ without revealing the randomness used by Alice or $b$ to Bob or Alice respectively.
+\item Bob recieves $\hat{C}$ and $\hat{a}$ and is now able to compute $\hat{C}(\hat{a}, \hat{b})$.
+\item Bob reveals this computation to Alice.
 \end{enumerate}
-
-\paragraph{Generation}
-
-\paragraph{Evaluation}
+Because Alice and Bob are Honest-but-Curious, i.e. Alice doesn't maliciously garble some other circuit $C'$, the nature of $\hat{C}$, $\hat{a}$, and $\hat{b}$ ensures that neither Alice or Bob learn anything about each other's inputs. The clear weakness in this approach, however, is that step 4 is not clearly described. This step can be achieved through oblivious transfer. The technical details of the oblivious transfer protocol is outside the scope of this paper, but at a high level, the protocol approximates the trusted third party Faith, ensuring that eavsdroppers learn sensitive data with low probability.
 
 \paragraph{Demo}
+The above algorithm is currently being developed but will be implemented in \texttt{garbled.py} contained in the \texttt{demos} directory (where all other demos will be located).
 
+\pagebreak
 \section{Private Edit Distance}
 
 \paragraph{Introduction}
@@ -108,6 +125,7 @@ This approximation process's accuracy is aided by the special distribution of hu
 \item A majority of the differences between genome sequences are substitutions, around 80\%
 \end{enumerate}
 
+\pagebreak
 \section{Differential Privacy}
 
 \paragraph{Introduction}
@@ -146,14 +164,18 @@ Any algorithm that satisfies $\epsilon$-differential privacy can be augmented to
 
 It is important to note the limitations of the above algorithm, particularly when it is applied to personalized medicine. Personalized medicine can be used to guide doctors in calculating dosages that are tailored to individuals. A strong candidate for personalized dosing is Warfarin, a popular anticoagulant. Both underdoses and overdoses can lead to death, underscoring the importance of finding the correct dose.
 
-\paragraph{}
-Using a dataset provided by the \textit{International Warfarin Pharmocogenetics Consortium} (IWPC), researchers at the University of Wisconsin constructed linear regression models designed to guide doctors in dosing. They then proceded to perform model inversion attacks to determine how much sensitive data these models would leak. These \textit{model inversion attack} would take the model and try to predict the prescence or abscence of specific genes in the individual genome. Differential privacy would effectively combat these types of attacks, but at the risk of clinical efficacy. In fact, differential privacy became effective at $\epsilon \leq 1$, but the risk of either mortality or morbidity increased significantly, as can be seen in the figure below. Clearly the effectiveness of Differential Privacy is bounded in by the level of acceptable increase in mortality. 
-
-\begin{figure}[h]
-\includegraphics{warfarin.png}
+\begin{center}
+\begin{figure}[t!]
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{warfarin.png}
 \centering
 \caption{Mortality and $\epsilon$}
 \end{figure}
+\end{center}
+
+\paragraph{}
+Using a dataset provided by the \textit{International Warfarin Pharmocogenetics Consortium} (IWPC), researchers at the University of Wisconsin constructed linear regression models designed to guide doctors in dosing. They then proceded to perform model inversion attacks to determine how much sensitive data these models would leak. These \textit{model inversion attack} would take the model and try to predict the prescence or abscence of specific genes in the individual genome. Differential privacy would effectively combat these types of attacks, but at the risk of clinical efficacy. In fact, differential privacy became effective at $\epsilon \leq 1$, but the risk of either mortality or morbidity increased significantly, as can be seen in the figure above. Clearly the effectiveness of Differential Privacy is bounded in by the level of acceptable increase in mortality. 
+
+\section{Conclusion}
 
 \begin{thebibliography}{5}
   

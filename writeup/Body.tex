@@ -51,7 +51,7 @@ Another useful concept is that of a circuit. A circuit is simply a representatio
 \paragraph{Garbled Circuits}
 The heart of this solution to the secure computation problem is the garbled circuit. Informally, garbling a circuit is a method of ``encrypting'' the circuit representation of a function $f$ such that it only reveals the output of $f$ and doesn't supply any information about the inputs. The circuit representation of $f$ is used because the encryption occurs at the bitwise operation-level, garbling the $AND, NOT, OR, XOR..$ gates. The randomness used to encrypt the garbled circuit will also be used to encrypt the inputs $a$ and $b$ to ensure the neither Alice nor Bob learns anything about the other's input.
 
-The garbling circuit scheme proceedes as follows:
+The garbling circuit scheme proceeds as follows:
 \begin{enumerate}
 \item Alice and Bob agree on a way to represent $f$ as a circuit $C$.
 \item Alice garbles the circuit $C$ yielding the garbled circuit $\hat{C}$.
@@ -121,6 +121,10 @@ This approximation process's accuracy is aided by the special distribution of hu
 \item The places at which they differ, i.e. the location of their edits from a reference genome are not close together.
 \item A majority of the differences between genome sequences are substitutions, around 80\%
 \end{enumerate}
+
+
+\paragraph{Alternatives}
+An interesting alternate approach was proposed by Cho et al. in their paper \textit{Secure genome-wide association analysis using multiparty computation}. In it, they discuse the ``Beaver Multiplication Triples'' optimization which allows for efficient secure matrix multiplication - an operation that features prominently in genome comparisons. An additional optimization reduced the communication cost through the use of pseudorandom generators. As opposed to the ``squeezing'' process described above, a pseudorandom generator is an algorithm that generates numbers whose properties are similar to a sequence of random numbers. This optimization reduces communication i/o as both parties can obtain numbers from the PRG without interacting.\cite{natureopt}
 
 \pagebreak
 \section{Differential Privacy}
@@ -193,7 +197,7 @@ Genetic data has the capacity to both uniquely identify and reveal sensitive inf
 \bibitem{warfarin}
   https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf
 
-\bibitem{natureped}
+\bibitem{natureopt}
   https://www.nature.com/articles/nbt.4108
   
 \end{thebibliography}
